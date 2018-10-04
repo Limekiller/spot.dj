@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2621e962-1a26-477c-9850-64c09e0e9dc2" name="Default Changelist" comment="" />
+    <list default="true" id="2621e962-1a26-477c-9850-64c09e0e9dc2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/spotifyinteraction.py" beforeDir="false" afterPath="$PROJECT_DIR$/spotifyinteraction.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +30,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="443" />
+          <entry key="py" value="1087" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="443" />
+          <entry key="Python" value="1087" />
         </counts>
       </usages-collector>
     </session>
@@ -43,10 +45,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spotifyinteraction.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+            <state relative-caret-position="60">
+              <caret line="4" column="76" selection-start-line="4" selection-start-column="76" selection-end-line="4" selection-end-column="76" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
+                <marker date="1538694759000" expanded="true" signature="319:468" ph="..." />
               </folding>
             </state>
           </provider>
@@ -65,9 +68,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-37" />
-    <option name="y" value="871" />
-    <option name="width" value="2560" />
+    <option name="x" value="113" />
+    <option name="y" value="54" />
+    <option name="width" value="2053" />
     <option name="height" value="1333" />
   </component>
   <component name="ProjectView">
@@ -151,11 +154,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="77" y="23" width="1362" height="1333" extended-state="0" />
+    <frame x="113" y="54" width="2053" height="1333" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25652498" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16929133" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" />
@@ -179,10 +182,11 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/spotifyinteraction.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="28" lean-forward="true" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
+        <state relative-caret-position="60">
+          <caret line="4" column="76" selection-start-line="4" selection-start-column="76" selection-end-line="4" selection-end-column="76" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
+            <marker date="1538694759000" expanded="true" signature="319:468" ph="..." />
           </folding>
         </state>
       </provider>
