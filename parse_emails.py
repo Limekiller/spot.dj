@@ -25,13 +25,15 @@ def readmail():
                 if part.get_content_type() == 'text/plain':
                     final_msg = part.get_payload()
 
-    parse_email(final_msg)
+    return final_msg
 
 
 def parse_email(msg):
+    # This function reads the final message and interprets line one as artist, line two as song
 
     msg = msg.splitlines()
     print("Artist: "+msg[0])
     print("Title: "+msg[1])
 
-readmail()
+last_email = readmail()
+parse_email(last_email)
