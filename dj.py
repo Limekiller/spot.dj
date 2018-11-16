@@ -1,9 +1,9 @@
 import youtube_scrape
 import parse_emails
 import time
-import os
-import sys
-import subprocess
+import math
+import playsound
+import pytube
 
 last_artist = ''
 last_song = ''
@@ -12,34 +12,43 @@ time_start = time.time()
 time_to_end = 99
 
 
-def handle_song():
+def handle_song(title):
     video_url, duration = youtube_scrape.scrape(play_queue[0][0], play_queue[0][1])
     duration = duration / 1000
-    if sys.platform == 'win32':
-        p1 = os.startfile(video_url)
-    else:
-        p1 = subprocess.Popen(['open', video_url])
-    return duration, p1
+    yt = pytube.YouTube(video_url)
+    stream = yt.streams.filter(only_audio=True, file_extension='mp3').first()
+    download_start = time.time()
+
+    print(download_start)
+    stream.download('./Music', title)
+    download_end = time.time()
+    print(download_end)
+    return duration
 
 
 while True:
     artist, song = parse_emails.readmail()
 
     if artist != last_artist or song != last_song:
+        last_artist, last_song = artist, song
         if not play_queue:
             time_start = time.time()
             play_queue.append([song, artist])
-            time_to_end, process = handle_song()
+            time_to_end = handle_song(song)
+            playsound.playsound('/Music/'+song+'.mp3')
         else:
             play_queue.append([song, artist])
 
     time_end = time.time()
     if time_end - time_start >= time_to_end + 3:
-        os.close(process)
-        play_queue.remove(0)
-        time_to_end, process = handle_song()
-        time_start = time.time()
 
+        play_queue.pop(0)
+        if play_queue:
+            time_to_end = handle_song(song)
+            time_start = time.time()
+            playsound.playsound('/Music/'+song+'.mp3')
+        else:
+            time_to_end = math.inf
     time.sleep(2)
 
 

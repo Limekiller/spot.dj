@@ -6,8 +6,11 @@ import re
 def rank_results(result_list, search_title, search_artist):
 
     scores = []
+    search_title = search_title.lower()
+    search_artist = search_artist.lower()
 
     for title in result_list:
+        title = title.lower()
         score = 0
         if search_title in title:
             score += 1
