@@ -13,7 +13,7 @@ def readmail():
     mail.login(from_email, from_pwd)
     mail.select('inbox')
 
-    type, data = mail.search(None, '(SUBJECT "spotipy")')
+    type, data = mail.search(None, '(SUBJECT "spot.dj")')
     id_list = data[0].split()
 
     typ, data = mail.fetch(id_list[-1], '(RFC822)')

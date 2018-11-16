@@ -1,52 +1,76 @@
 import youtube_scrape
 import parse_emails
+
 import time
+import os
 import math
-import playsound
-import pytube
+import youtube_dl
+import pygame
+import mutagen.mp3
 
 last_artist = ''
 last_song = ''
 play_queue = []
 time_start = time.time()
-time_to_end = 99
+time_to_end = math.inf
 
 
 def handle_song(title):
     video_url, duration = youtube_scrape.scrape(play_queue[0][0], play_queue[0][1])
     duration = duration / 1000
-    yt = pytube.YouTube(video_url)
-    stream = yt.streams.filter(only_audio=True, file_extension='mp3').first()
-    download_start = time.time()
 
-    print(download_start)
-    stream.download('./Music', title)
-    download_end = time.time()
-    print(download_end)
+    options = {
+        'format': 'bestaudio/best',
+        'outtmpl': './Music/'+title+".%(ext)s",
+        'postprocessors': [{
+            'key':'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+        }]
+    }
+    with youtube_dl.YoutubeDL(options) as ydl:
+        ydl.download([video_url])
+
+    # os.rename('./Music/'+title+'.mp4', './Music/'+title+'.mp3')
     return duration
 
 
 while True:
     artist, song = parse_emails.readmail()
+    print(play_queue)
 
     if artist != last_artist or song != last_song:
         last_artist, last_song = artist, song
         if not play_queue:
-            time_start = time.time()
             play_queue.append([song, artist])
             time_to_end = handle_song(song)
-            playsound.playsound('/Music/'+song+'.mp3')
+
+            if not time_to_end:
+                last_artist, last_song = '', ''
+                continue
+
+            mp3 = mutagen.mp3.MP3("./Music/"+song+".mp3")
+            pygame.mixer.init(frequency=mp3.info.sample_rate)
+            pygame.mixer.music.load("./Music/"+song+".mp3")
+            pygame.mixer.music.play()
+
+            time_start = time.time()
+
         else:
             play_queue.append([song, artist])
 
     time_end = time.time()
     if time_end - time_start >= time_to_end + 3:
 
+        os.remove('./Music/'+play_queue[0][0]+'.mp3')
         play_queue.pop(0)
         if play_queue:
             time_to_end = handle_song(song)
             time_start = time.time()
-            playsound.playsound('/Music/'+song+'.mp3')
+
+            mp3 = mutagen.mp3.MP3("./Music/" + song + ".mp3")
+            pygame.mixer.init(frequency=mp3.info.sample_rate)
+            pygame.mixer.music.load("./Music/" + song + ".mp3")
+            pygame.mixer.music.play()
         else:
             time_to_end = math.inf
     time.sleep(2)

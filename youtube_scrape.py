@@ -6,8 +6,9 @@ import re
 def rank_results(result_list, search_title, search_artist):
 
     scores = []
-    search_title = search_title.lower()
-    search_artist = search_artist.lower()
+    search_artist = search_artist.replace("+", " ").lower()
+    search_title = search_title.replace("+", " ").lower()
+
 
     for title in result_list:
         title = title.lower()
@@ -17,9 +18,11 @@ def rank_results(result_list, search_title, search_artist):
         if search_artist in title:
             score += 1
         if search_title in title and search_artist in title:
-            score += 1
-        if title == search_title:
-            score = 100
+            score += 3
+        if "official" in title:
+            score += 5
+        # if title == search_title:
+        #    score = 100
         scores.append(score)
 
     return scores.index(max(scores))
@@ -64,8 +67,11 @@ def scrape(search_title, search_artist):
     all_title_tags = soup.find_all("h3", attrs={"class": "yt-lockup-title"})
 
     for h3 in all_title_tags:
-        title.append(h3.find('a').contents[0])
+        title.append(h3.find('a').contents[0].lower())
         ref.append(h3.find('a')['href'])
+
+    if not title:
+        return None
 
     best_title = rank_results(title, search_title, search_artist)
     print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
