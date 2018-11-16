@@ -1,10 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-import webbrowser
-
-title = "Doubt"
-artist = "Hippo Campus"
 
 
 def rank_results(result_list, search_title, search_artist):
@@ -12,11 +8,11 @@ def rank_results(result_list, search_title, search_artist):
     scores = []
 
     for title in result_list:
-        score = 0;
+        score = 0
         if search_title in title:
             score += 1
         if search_artist in title:
-            score +=1
+            score += 1
         if search_title in title and search_artist in title:
             score += 1
         if title == search_title:
@@ -46,8 +42,8 @@ def get_video_time(url):
 
 
 def scrape(search_title, search_artist):
-    search_artist = search_artist.replace(" ","+")
-    search_title = search_title.replace(" ","+")
+    search_artist = search_artist.replace(" ", "+")
+    search_title = search_title.replace(" ", "+")
 
     search_query = search_title + "+" + search_artist
     youtube_url = "https://www.youtube.com/results?search_query=" + search_query
@@ -72,8 +68,6 @@ def scrape(search_title, search_artist):
     print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
     final_url = 'https://www.youtube.com'+ref[best_title]
 
-    print("Video length is "+str(get_video_time(final_url))+' ms long')
-    webbrowser.open(final_url)
-
-
-scrape(title, artist)
+    video_length = get_video_time(final_url)
+    print("Video length is "+str(video_length)+' ms long')
+    return final_url, video_length

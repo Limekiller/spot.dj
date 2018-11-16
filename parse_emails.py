@@ -1,16 +1,16 @@
 import imaplib
 import email
 
-from_email = 'gcprogrammingclub@gmail.com'
-from_pwd = 'YAYPYTHON'
-smtp_server = 'imap.gmail.com'
-smtp_port = 993
 
 def readmail():
-    # This function reads the email account for spot.dj requests
+    """This function reads the email account for spot.dj requests"""
+
+    from_email = 'gcprogrammingclub@gmail.com'
+    from_pwd = 'YAYPYTHON'
+    smtp_server = 'imap.gmail.com'
 
     mail = imaplib.IMAP4_SSL(smtp_server)
-    mail.login(from_email,from_pwd)
+    mail.login(from_email, from_pwd)
     mail.select('inbox')
 
     type, data = mail.search(None, '(SUBJECT "spotipy")')
@@ -25,15 +25,11 @@ def readmail():
                 if part.get_content_type() == 'text/plain':
                     final_msg = part.get_payload()
 
-    return final_msg
+    return parse_email(final_msg)
 
 
 def parse_email(msg):
     # This function reads the final message and interprets line one as artist, line two as song
 
     msg = msg.splitlines()
-    print("Artist: "+msg[0])
-    print("Title: "+msg[1])
-
-last_email = readmail()
-parse_email(last_email)
+    return msg[0], msg[1]
