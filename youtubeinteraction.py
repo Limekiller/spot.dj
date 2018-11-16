@@ -1,9 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
+import re
 import webbrowser
 
-title = "Numb"
-artist = "OJR"
+title = "Doubt"
+artist = "Hippo Campus"
 
 
 def rank_results(result_list, search_title, search_artist):
@@ -25,7 +26,23 @@ def rank_results(result_list, search_title, search_artist):
     return scores.index(max(scores))
 
 
+def get_video_time(url):
+    header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
 
+    try:
+        response = requests.get(url, headers=header)
+    except requests.exceptions.ConnectionError:
+        return None
+
+    content = response.content
+    soup = BeautifulSoup(content, "html.parser")
+    string_to_search = soup(text=re.compile('approxDurationMs'))[0]
+    slice_beginning = string_to_search.index('approxDurationMs')+len("approxDurationMs")
+    slice_end = string_to_search.index('audioSampleRate')
+    unrefined_time = string_to_search[slice_beginning:slice_end]
+    refined_time = ''.join(c for c in unrefined_time if c.isdigit())
+
+    return int(refined_time)
 
 
 def scrape(search_title, search_artist):
@@ -52,9 +69,11 @@ def scrape(search_title, search_artist):
         ref.append(h3.find('a')['href'])
 
     best_title = rank_results(title, search_title, search_artist)
-    print("Best result is: '"+title[best_title]+"' at index "+str(best_title))
+    print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
+    final_url = 'https://www.youtube.com'+ref[best_title]
 
-    webbrowser.open('https://www.youtube.com'+ref[best_title])
+    print("Video length is "+str(get_video_time(final_url))+' ms long')
+    webbrowser.open(final_url)
 
 
 scrape(title, artist)
