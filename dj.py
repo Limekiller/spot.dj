@@ -18,6 +18,7 @@ loops_without_music = 0
 
 
 def handle_song(title):
+    print(play_queue)
     video_url, duration = youtube_scrape.scrape(play_queue[0][0], play_queue[0][1])
 
     if not duration:
@@ -56,6 +57,7 @@ while True:
 
         if not play_queue:
             play_queue.append([song, artist])
+            print("Now playing: "+artist+" - "+song)
             time_to_end = handle_song(song)
             if not time_to_end:
                 last_artist, last_song = '', ''
@@ -68,19 +70,17 @@ while True:
     time_end = time.time()
     if time_end - time_start >= time_to_end + 3:
         can_remove = False
-        while not can_remove:
-            pygame.mixer.stop()
-            pygame.mixer.quit()
-            try:
-                os.remove('./Music/'+play_queue[0][0]+'.mp3')
-                can_remove = True
-            except PermissionError:
-                pass
+        pygame.mixer.stop()
+        pygame.mixer.quit()
+        time.sleep(1)
+        os.remove('./Music/'+play_queue[0][0]+'.mp3')
 
         last_played_artist = play_queue[0][1]
         play_queue.pop(0)
 
         if play_queue:
+            artist, song = play_queue[0][0], play_queue[0][1]
+            print("Now playing: "+artist+" - "+song)
             time_to_end = handle_song(song)
             time_start = time.time()
             if not time_to_end:
@@ -94,6 +94,7 @@ while True:
         loops_without_music = 0
         artist = artist_finder.find_similar_artist(last_played_artist)
         song = artist_finder.get_artist_song(artist)
+        print("Now playing: " + artist + " - " + song)
 
         play_queue.append([song, artist])
         time_to_end = handle_song(song)

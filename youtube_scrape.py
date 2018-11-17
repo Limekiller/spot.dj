@@ -34,7 +34,7 @@ def get_video_time(url):
     try:
         response = requests.get(url, headers=header)
     except requests.exceptions.ConnectionError:
-        return None
+        return None, None
 
     content = response.content
     soup = BeautifulSoup(content, "html.parser")
@@ -58,7 +58,7 @@ def scrape(search_title, search_artist):
     try:
         response = requests.get(youtube_url, headers=header)
     except requests.exceptions.ConnectionError:
-        return None
+        return None, None
 
     content = response.content
     soup = BeautifulSoup(content, "html.parser")
@@ -71,7 +71,7 @@ def scrape(search_title, search_artist):
             title.append(h3.find('a').contents[0].lower())
             ref.append(h3.find('a')['href'])
         except TypeError:
-            return None
+            return None, None
 
 
     best_title = rank_results(title, search_title, search_artist)
