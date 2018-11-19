@@ -3,7 +3,7 @@ import email
 
 
 def readmail():
-    """This function reads the email account for spot.dj requests"""
+    """Get the most recently received email with the subject spot.dj"""
 
     from_email = 'gcprogrammingclub@gmail.com'
     from_pwd = 'YAYPYTHON'
@@ -25,6 +25,7 @@ def readmail():
                 if part.get_content_type() == 'text/plain':
                     final_msg = part.get_payload()
 
+    # Return the first line as artist, second line as title
     return parse_email(final_msg)
 
 

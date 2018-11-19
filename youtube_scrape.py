@@ -4,31 +4,37 @@ import re
 
 
 def rank_results(result_list, search_title, search_artist):
-
+    """Rank results based on similarity to search term"""
     scores = []
     search_artist = search_artist.replace("+", " ").lower()
     search_title = search_title.replace("+", " ").lower()
+    search_terms = search_title.split() + search_artist.split()
 
-
+    # Give score to each result
     for title in result_list:
         title = title.lower()
         score = 0
+
+        # One point for each word in result title
+        for term in search_terms:
+            if term in title:
+                score += 1
+
+        # 2 points if whole title in result, 2 points for whole artist, 4 points for both
         if search_title in title:
-            score += 1
+            score += 2
         if search_artist in title:
-            score += 1
+            score += 2
         if search_title in title and search_artist in title:
-            score += 3
-            if "official" in title:
-                score += 5
-        # if title == search_title:
-        #    score = 100
+            score += 4
+
         scores.append(score)
 
     return scores.index(max(scores))
 
 
 def get_video_time(url):
+    """Get the duration of the YouTube video"""
     header = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
 
     try:
@@ -38,6 +44,9 @@ def get_video_time(url):
 
     content = response.content
     soup = BeautifulSoup(content, "html.parser")
+
+    # YouTube has this in a JS variable for each song, but you can't just pull that out with BeautifulSoup
+    # So get it as a string and slice from there to the next variable, then only keep numbers
     string_to_search = soup(text=re.compile('approxDurationMs'))[0]
     slice_beginning = string_to_search.index('approxDurationMs')+len("approxDurationMs")
     slice_end = string_to_search.index('audioSampleRate')
@@ -48,6 +57,7 @@ def get_video_time(url):
 
 
 def scrape(search_title, search_artist):
+    """Get video results from YouTube"""
     search_artist = search_artist.replace(" ", "+")
     search_title = search_title.replace(" ", "+")
 
@@ -73,7 +83,7 @@ def scrape(search_title, search_artist):
         except TypeError:
             return None, None
 
-
+    # Return best matching link and its duration
     best_title = rank_results(title, search_title, search_artist)
     print("Best result is: '"+str(title[best_title])+"' at index "+str(best_title))
     final_url = 'https://www.youtube.com'+ref[best_title]
