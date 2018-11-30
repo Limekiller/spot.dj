@@ -1,23 +1,10 @@
 # spot.dj
-Hi
+A music streaming platform that takes requests from an email account for collaborative listening.
 
-Hi
+Plays similar songs radio-style if no songs in the queue.
 
-Hi
+Requires youtube_dl, pygame, mutagen, requests, and bs4 libraries  
+Also requires ffmpeg to be installed.
 
-Hi
-
-Hi
-
-Hi
-
-Hi
-Hi
-Hi
-Hi
-Hi
-Hi
-personally, i prefer hello
-Actually i don't
-
-group 2 rulez
+Will possibly support requests via SMS as well in the future  
+Desktop application + GUI coming soon
