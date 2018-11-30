@@ -1,4 +1,8 @@
 # spot.dj
+
+This is the GUI branch for spot.dj
+___
+
 A music streaming platform that takes requests from an email account for collaborative listening.
 
 Plays similar songs radio-style if no songs in the queue.
